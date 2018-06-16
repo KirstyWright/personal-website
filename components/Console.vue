@@ -1,7 +1,7 @@
 <template lang="html">
     <div class='terminal'>
         <div class="terminal__header">
-            <div class="terminal__header__button-container">
+            <div class="terminal__header-button-container">
                 <div class="terminal__header-button terminal__header-button--red"></div>
                 <div class="terminal__header-button terminal__header-button--yellow"></div>
                 <div class="terminal__header-button"></div>
@@ -34,7 +34,7 @@ export default {
     position: relative;
 }
 
-.terminal__header__button-container{
+.terminal__header-button-container{
     height:100%;
     padding:5px;
 }
