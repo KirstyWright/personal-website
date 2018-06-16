@@ -13,7 +13,8 @@
         "precommit": "npm run lint"
     },
     "dependencies": {
-        "nuxt": "^1.0.0"
+        "nuxt": "^1.0.0",
+        "typed.js": "^2.0.8"
     },
     "devDependencies": {
         "babel-eslint": "^8.2.1",
