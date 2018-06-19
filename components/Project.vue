@@ -2,9 +2,9 @@
     <div class="col-md-12">
         <div class="project-card flex-md-row">
             <div class="project-card__content">
-                <span>
-                    <strong class="d-inline-block mb-2" v-bind:key='tag' v-for="(tag, index) in project.tags">{{tag}}<span v-if="index+1 < project.tags.length">,&nbsp;</span></strong>
-                </span>
+                <div class="d-inline-block mb-2" v-bind:key='tag' v-for="(tag, index) in project.tags">
+                    {{tag}}<span v-if="index+1 < project.tags.length">,&nbsp;</span>
+                </div>
                 <h2 class='mb-1'>{{project.name}}</h2>
                 <p v-html="project.description"></p>
             </div>

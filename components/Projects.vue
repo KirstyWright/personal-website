@@ -47,6 +47,13 @@ export default {
                     tags: [
                         'PHP', 'Laravel'
                     ]
+                },
+                {
+                    name: 'Polaris',
+                    description: ``,
+                    tags: [
+                        'PHP', 'Laravel', 'Python'
+                    ]
                 }
             ]
         }
