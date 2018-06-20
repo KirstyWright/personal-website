@@ -1,15 +1,35 @@
 <template lang="html">
-    <div class="scroll-down">
-        <div class="scroll-down__arrow" v-on:click="scrollTo">click</div>
+    <div class="scroll-down" v-show="show">
+        <div id="js-scroll-down" class="scroll-down__arrow flex-md-row" v-on:click="scrollTo">
+            <img class='scroll-down__arrow-image' src="~/assets/arrow_down.svg" alt="downward arrow">
+            <span>Click to skip the past awesome console</span>
+            <img class='scroll-down__arrow-image' src="~/assets/arrow_down.svg" alt="downward arrow">
+        </div>
     </div>
 </template>
 
 <script>
 export default {
+    data: function() {
+        return {
+            show: ''
+        }
+    },
+    mounted: function() {
+        this.show = true;
+        window.document.body.onscroll = () => {
+            let element = document.getElementById('js-terminal');
+            if (window.scrollY < (element.offsetTop + element.offsetHeight)) {
+                this.show = true;
+            } else {
+                this.show = false;
+            }
+        }
+    },
     methods: {
         scrollTo: function()
         {
-            let target = document.getElementById('projects')
+            let target = document.getElementById('about')
             window.scrollTo(0,target.offsetTop);
         }
     }
@@ -20,10 +40,18 @@ export default {
     .scroll-down {
         position: fixed;
         bottom:0px;
-        width:50px;
+        width:383px;
         height:50px;
         z-index:10;
         cursor:pointer;
-        left:calc(50%-25px)
+        left:calc(50%-191px);
+        background-color:white;
+        color:black;
+    }
+    .scroll-down:hover {
+        background-color:#34ca46;
+    }
+    .scroll-down__arrow-image{
+        color: white;
     }
 </style>

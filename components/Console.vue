@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class='terminal'>
+    <div id='js-terminal' class='terminal'>
         <div class="terminal__header">
             <div class="terminal__header-button-container">
                 <div class="terminal__header-button terminal__header-button--red"></div>
@@ -28,7 +28,7 @@ export default {
         }
     },
     mounted: function(){
-        $('.terminal').height(window.innerHeight - $('.navbar').height() - 70);
+        $('.terminal').height(window.innerHeight - 70);
         $('.terminal__input-row').show();
         document.onkeydown = (e) => {
             let key = e.keyCode || e.charCode;
