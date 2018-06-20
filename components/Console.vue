@@ -48,6 +48,7 @@ export default {
                 e.preventDefault();
                 input.innerHTML = input.innerHTML.slice(0,-1)
             } else if (key >= 32 && key <= 126) {
+                e.preventDefault();
                 input.innerHTML = input.innerHTML + e.key
             }
         }
