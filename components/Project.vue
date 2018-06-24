@@ -18,13 +18,3 @@ export default {
     props: ['project']
 }
 </script>
-
-<style lang="css">
-    .project-card {
-        display: flex;
-        word-wrap: break-word;
-        background-color: rgba(0,0,0,0.2);
-        padding:10px;
-        margin-bottom:30px;
-    }
-</style>

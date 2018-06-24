@@ -11,7 +11,7 @@
             <Interest />
         </section>
         <section class="container">
-            <Projects />
+            <ProjectsPreview />
         </section>
     </div>
 </template>
@@ -22,7 +22,7 @@ import ScrollTo from '~/components/ScrollTo.vue'
 import About from '~/components/About.vue'
 import Console from '~/components/Console.vue'
 import Interest from '~/components/Interest.vue'
-import Projects from '~/components/Projects.vue'
+import ProjectsPreview from '~/components/ProjectsPreview.vue'
 
 export default {
     components: {
@@ -30,7 +30,7 @@ export default {
         Console,
         Interest,
         ScrollTo,
-        Projects
+        ProjectsPreview
     }
 }
 </script>
