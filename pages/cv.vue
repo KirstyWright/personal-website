@@ -46,6 +46,9 @@
             <div id='projects'>
                 <Projects />
             </div>
+            <div id='interest'>
+                <Interest />
+            </div>
         </section>
     </div>
 </template>
@@ -54,11 +57,13 @@
 
 import About from '~/components/About.vue'
 import Projects from '~/components/Projects.vue'
+import Interest from '~/components/Interest.vue'
 
 export default {
     components: {
         About,
-        Projects
+        Projects,
+        Interest
     }
 }
 </script>
