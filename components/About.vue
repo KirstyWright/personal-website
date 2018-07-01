@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="mt-5">
+    <div>
         <h1 class='text-center'>About me</h1>
         <div class="project-card" >
             <div class="d-inline-flex">

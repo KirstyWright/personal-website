@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="container pt-5">
+        <section class="container">
             <div class="col-md-12">
                 <About />
                 <h1 class='text-center mb-4'>Roles</h1>
@@ -64,6 +64,7 @@ export default {
         About,
         Projects,
         Interest
-    }
+    },
+    layout:'page'
 }
 </script>

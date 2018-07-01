@@ -9,6 +9,7 @@
 import Projects from '~/components/Projects.vue'
 
 export default {
+    layout:'page',
     components: {
         Projects
     }

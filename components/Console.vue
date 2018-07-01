@@ -1,5 +1,5 @@
 <template lang="html">
-    <div id='js-terminal' class='terminal'>
+    <div id='js-terminal' class='terminal mb-5'>
         <div class="terminal__header">
             <div class="terminal__header-button-container">
                 <div class="terminal__header-button terminal__header-button--red"></div>
@@ -9,8 +9,8 @@
         </div>
         <div class="terminal__body">
             <div class="terminal__start">
-                <p>Hi there, welcome to my corner of the internet. Not entirely sure why you are here as I have no amazing cat videos or public access databases.</p>
-                <p>Yes this is a terminal (sorta) and it does so some stuff. Why don't you try typing `help` and hitting enter.</p>
+                <p>Hi there, welcome to my corner of the internet. Not entirely sure why you are here as I have no amazing cat videos or anything as cool as that.</p>
+                <p>Yes this is a terminal (sorta) and it has some working commands. Why don't you try typing `help` and hitting enter.</p>
             </div>
             <div id="terminal__results-area">
                 <p class="mb-0" v-bind:key="index" v-for="(row,index) in output"><span class='terminal__body-prefix' v-if="row.type==='command'">guest$&nbsp;</span><span v-html="row.content"></span></p>
@@ -50,6 +50,8 @@ export default {
             } else if (key >= 32 && key <= 126) {
                 e.preventDefault();
                 input.innerHTML = input.innerHTML + e.key
+            } else if (key == 13) {
+                e.preventDefault();
             }
         }
     },
@@ -73,7 +75,7 @@ export default {
                 case 'whoami':
                     return 'How am I supposed to know who you are? Only you can answer that!';
                 case 'open':
-                    let pages = ['projects','cv','about'];
+                    let pages = ['projects','cv'];
                     if (pages.includes(args[0])) {
                         window.location.href = '/'+args[0];
                         return
@@ -107,6 +109,7 @@ export default {
 .terminal {
     width:100%;
     margin:20px auto 20px auto;
+    height:600px;
 }
 
 .terminal__header {
