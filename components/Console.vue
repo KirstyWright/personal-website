@@ -1,5 +1,5 @@
 <template lang="html">
-    <div id='js-terminal' class='terminal mb-5 d-none d-md-block'>
+    <div id='js-terminal' class='terminal mb-5'>
         <div class="terminal__header">
             <div class="terminal__header-button-container">
                 <div class="terminal__header-button terminal__header-button--red"></div>
@@ -10,12 +10,13 @@
         <div class="terminal__body">
             <div class="terminal__start">
                 <p>Hi there, welcome to my corner of the internet. Not entirely sure why you are here as I have no amazing cat videos or anything as cool as that.</p>
-                <p>Yes this is a terminal (sorta) and it has some working commands. Why don't you try typing `help` and hitting enter.</p>
+                <p class='d-block d-md-none'>This terminal is interactive on a desktop pc, so you should totally come back and have a play when you are at one.</p>
+                <p class='d-none d-md-block'>Yes this is a terminal (sorta) and it has some working commands. Why don't you try typing `help` and hitting enter.</p>
             </div>
-            <div id="terminal__results-area">
+            <div id="terminal__results-area" class='d-none d-md-block'>
                 <p class="mb-0" v-bind:key="index" v-for="(row,index) in output"><span class='terminal__body-prefix' v-if="row.type==='command'">guest$&nbsp;</span><span v-html="row.content"></span></p>
             </div>
-            <div v-show='false' class='terminal__input-row'><span class='terminal__body-prefix'>guest$&nbsp;</span><span id='terminal__user-input'></span><span class="terminal__cursor">|</span></div>
+            <div v-show='false' class='terminal__input-row d-none d-md-block'><span class='terminal__body-prefix'>guest$&nbsp;</span><span id='terminal__user-input'></span><span class="terminal__cursor">|</span></div>
         </div>
     </div>
 </template>

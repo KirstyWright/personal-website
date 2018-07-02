@@ -49,6 +49,15 @@
             <div id='interest'>
                 <Interest />
             </div>
+            <div class="col-md-12">
+                <h1 class='text-center mb-4'>Volunteering</h1>
+                <div class="project-card flex-md-row flex-wrap flex-sm-nowrap">
+                    <div class="project-card__content">
+                        <h3 class='mb-1'>British Red Cross: Event First Aid Volunteer</h3>
+                        <div class="d-inline-block mb-2">January 2018 - Current</div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </template>

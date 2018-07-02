@@ -40,13 +40,24 @@ export default {
     .scroll-down {
         position: fixed;
         bottom:0px;
-        width:383px;
-        height:50px;
+        max-width:383px;
+        min-height:50px;
         z-index:10;
         cursor:pointer;
         left:calc(50%-191px);
         background-color:white;
         color:black;
+    }
+    @media only screen and (max-width: 390px) {
+        .scroll-down {
+            width:100%;
+            padding:5px 10px;
+            left:0px;
+            text-align: center;
+        }
+        .scroll-down__arrow-image {
+            display:none;
+        }
     }
     .scroll-down:hover {
         background-color:#34ca46;

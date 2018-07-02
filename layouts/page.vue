@@ -1,12 +1,12 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <a class="navbar-brand" href="#">Kirsty Wright</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbarSm">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="collapse navbar-collapse container" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+            <div class="navbar-collapse collapse" id="collapsingNavbarSm">
+                <ul class="navbar-nav">
                     <li class="nav-item" v-bind:class="{'active': $nuxt.$route.name == ''}">
                         <a class="nav-link" href="/">Home</a>
                     </li>
