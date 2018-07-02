@@ -29,7 +29,7 @@ export default {
         }
     },
     mounted: function(){
-        $('.terminal').height(window.innerHeight - 70);
+        $('.terminal').height(window.innerHeight - 70 - $('.navbar').height());
         $('.terminal__input-row').show();
         document.onkeydown = (e) => {
             let key = e.keyCode || e.charCode;
