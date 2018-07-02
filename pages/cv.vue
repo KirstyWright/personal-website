@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <About />
                 <h1 class='text-center mb-4'>Roles</h1>
-                <div class="project-card flex-md-row">
+                <div class="project-card flex-md-row flex-wrap flex-sm-nowrap">
                     <img class="project-card__med-icon mr-2" src='~/assets/companies/shelter.png' style='width:72px;height:72px;'/>
                     <div class="project-card__content">
                         <h3 class='mb-1'>Shelter UK: Backend Developer</h3>
@@ -21,7 +21,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="project-card flex-md-row">
+                <div class="project-card flex-md-row flex-wrap flex-sm-nowrap">
                     <img class="project-card__med-icon mr-2" src='~/assets/companies/diverse.png' style='width:72px;height:72px;'/>
                     <div class="project-card__content">
                         <h3 class='mb-1'>Diverse Interactive: Full Stack Developer</h3>
@@ -31,7 +31,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="project-card flex-md-row">
+                <div class="project-card flex-md-row flex-wrap flex-sm-nowrap">
                     <img class="project-card__med-icon mr-2" src='~/assets/companies/minted.png' style='width:72px;height:72px;'/>
                     <div class="project-card__content">
                         <h3 class='mb-1'>Mintedbox: Web Developer</h3>

@@ -1,5 +1,5 @@
 <template lang="html">
-    <div id='js-terminal' class='terminal mb-5'>
+    <div id='js-terminal' class='terminal mb-5 d-none d-md-block'>
         <div class="terminal__header">
             <div class="terminal__header-button-container">
                 <div class="terminal__header-button terminal__header-button--red"></div>
@@ -33,6 +33,10 @@ export default {
         document.onkeydown = (e) => {
             let key = e.keyCode || e.charCode;
             let input = document.getElementById('terminal__user-input');
+            if (input.offsetWidth == 0 && input.offsetHeight == 0) {
+                // Console is hidden so not caring about user input
+                return;
+            }
             if (key == 13) {
                 this.output.push({
                     content: input.innerHTML,
@@ -111,6 +115,7 @@ export default {
     margin:20px auto 20px auto;
     height:600px;
 }
+
 
 .terminal__header {
     background-color: #d6d4d7;

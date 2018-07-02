@@ -48,35 +48,35 @@ export default {
                     logo: require('~/assets/icons/python-original-wordmark.svg'),
                     content: 'Python is a wonderful language to use and I enjoy working with it when I get the chance. I tend to use it whenever I write a desktop program or need a small script to perform a task. For instance at Shelter I used Python alot for small scripts to extract and parse data from systems. Core components of Polaris also use Python to run applications both on Linux machines and compiled exe\'s on Windows boxes. Asynchronous Python is also alot of fun to write and I have enjoyed that when writing bots using Discord or Websockets. '
                 },
-                ruby: {
-                    name: 'Ruby',
-                    logo: require('~/assets/icons/ruby-original-wordmark.svg')
-                },
-                vuejs: {
-                    name: 'VueJs',
-                    logo: require('~/assets/icons/vuejs-original-wordmark.svg'),
-                },
-                javascript: {
-                    name: 'Javascript',
-                    logo: require('~/assets/icons/javascript-original.svg')
-                },
-                html: {
-                    name: 'HTML',
-                    logo: require('~/assets/icons/html5-original-wordmark.svg')
-                },
-                apache: {
-                    name: 'Apache2',
-                    logo: require('~/assets/icons/apache-original-wordmark.svg')
-                },
-                vagrant: {
-                    name: 'Vagrant',
-                    logo: require('~/assets/icons/vagrant-original-wordmark.svg')
-                },
-                atom: {
-                    name: 'Atom',
-                    logo: require('~/assets/icons/atom-original-wordmark.svg'),
-                    content: "Atom is my go to editor for everything I work with. One of the main reasons I love it, is due to how much you can customise it, its designed for you to add what you want and tweak to your hearts content. My atom install runs with various ide plugins for php and python along with really useful bits of kit like Emmet, which makes typing HTML a breeze."
-                }
+                // ruby: {
+                //     name: 'Ruby',
+                //     logo: require('~/assets/icons/ruby-original-wordmark.svg')
+                // },
+                // vuejs: {
+                //     name: 'VueJs',
+                //     logo: require('~/assets/icons/vuejs-original-wordmark.svg'),
+                // },
+                // javascript: {
+                //     name: 'Javascript',
+                //     logo: require('~/assets/icons/javascript-original.svg')
+                // },
+                // html: {
+                //     name: 'HTML',
+                //     logo: require('~/assets/icons/html5-original-wordmark.svg')
+                // },
+                // apache: {
+                //     name: 'Apache2',
+                //     logo: require('~/assets/icons/apache-original-wordmark.svg')
+                // },
+                // vagrant: {
+                //     name: 'Vagrant',
+                //     logo: require('~/assets/icons/vagrant-original-wordmark.svg')
+                // },
+                // atom: {
+                //     name: 'Atom',
+                //     logo: require('~/assets/icons/atom-original-wordmark.svg'),
+                //     content: "Atom is my go to editor for everything I work with. One of the main reasons I love it, is due to how much you can customise it, its designed for you to add what you want and tweak to your hearts content. My atom install runs with various ide plugins for php and python along with really useful bits of kit like Emmet, which makes typing HTML a breeze."
+                // }
             }
         }
     },
