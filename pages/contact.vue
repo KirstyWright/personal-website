@@ -11,7 +11,6 @@
 import Contact from '~/components/Contact.vue'
 
 export default {
-    layout:'page',
     components: {
         Contact,
     }

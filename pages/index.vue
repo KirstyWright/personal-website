@@ -25,7 +25,6 @@ import Interest from '~/components/Interest.vue'
 import ProjectsPreview from '~/components/ProjectsPreview.vue'
 
 export default {
-    layout:'page',
     components: {
         About,
         Console,

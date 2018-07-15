@@ -42,8 +42,18 @@ module.exports = {
         }
     },
     modules: [
-        ['@nuxtjs/google-analytics', {
-            id: 'UA-122367113-1'
-        }]
+        [
+            '@nuxtjs/google-analytics',
+            {
+                id: 'UA-122367113-1'
+            }
+        ],
+        [
+            '@nuxtjs/blog',
+            {
+            }
+        ],
+        ['nuxt-sass-resources-loader', '@/styles/resources.scss'],
+        '@nuxtjs/axios'
     ]
 }

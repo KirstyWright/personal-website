@@ -74,7 +74,6 @@ export default {
         Projects,
         Interest
     },
-    layout:'page',
     head () {
         return {
             title: 'CV - Kirsty Wright',
