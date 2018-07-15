@@ -51,6 +51,7 @@ module.exports = {
         [
             '@nuxtjs/blog',
             {
+                base:'https://kirstywright.co.uk'
             }
         ],
         ['nuxt-sass-resources-loader', '@/styles/resources.scss'],
