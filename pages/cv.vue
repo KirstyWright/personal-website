@@ -74,6 +74,14 @@ export default {
         Projects,
         Interest
     },
-    layout:'page'
+    layout:'page',
+    head () {
+        return {
+            title: 'CV - Kirsty Wright',
+            meta: [
+                { hid: 'description', name: 'description', content: 'CV for Kirsty Wright.' }
+            ]
+        }
+    }
 }
 </script>
