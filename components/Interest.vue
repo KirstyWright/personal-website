@@ -52,10 +52,11 @@ export default {
                 //     name: 'Ruby',
                 //     logo: require('~/assets/icons/ruby-original-wordmark.svg')
                 // },
-                // vuejs: {
-                //     name: 'VueJs',
-                //     logo: require('~/assets/icons/vuejs-original-wordmark.svg'),
-                // },
+                vuejs: {
+                    name: 'Vue.js',
+                    logo: require('~/assets/icons/vuejs-original-wordmark.svg'),
+                    content: 'Vue.js is somthing I now use quite alot, as I don\'t need to have any complex setup or completely change the way a frontend works. The components can be really lightweight and only used when I need extra functionality on an element or they can makeup an entire site. The ability to only add a single component to an existing frontend in a system such as Laravel speeds up development time as I am not faffing around with huge amounts of setup.'
+                },
                 // javascript: {
                 //     name: 'Javascript',
                 //     logo: require('~/assets/icons/javascript-original.svg')
