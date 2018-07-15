@@ -51,6 +51,7 @@ module.exports = {
         [
             '@nuxtjs/blog',
             {
+                static: true,
                 base:'https://www.kirstywright.co.uk'
             }
         ],
