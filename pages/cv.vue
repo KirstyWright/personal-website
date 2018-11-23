@@ -53,8 +53,16 @@
                 <h1 class='text-center mb-4'>Volunteering</h1>
                 <div class="project-card flex-md-row flex-wrap flex-sm-nowrap">
                     <div class="project-card__content">
-                        <h3 class='mb-1'>British Red Cross: Event First Aid Volunteer</h3>
+                        <h3 class='mb-1'>British Red Cross: Enhanced Skills Event First Aid Volunteer</h3>
                         <div class="d-inline-block mb-2">January 2018 - Current</div>
+                        <p>
+                            Currently hold the following internal red cross certifications:
+                            <ul>
+                                <li>Standard first aid</li>
+                                <li>Resuscitation Support</li>
+                                <li>Medical</li>
+                            </ul>
+                        </p>
                     </div>
                 </div>
             </div>
