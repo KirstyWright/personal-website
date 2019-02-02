@@ -5,10 +5,18 @@
                 <About />
                 <h1 class='text-center mb-4'>Roles</h1>
                 <div class="project-card flex-md-row flex-wrap flex-sm-nowrap">
+                    <img class="project-card__med-icon mr-2" src='~/assets/companies/fib.png' style='width:72px;height:72px;'/>
+                    <div class="project-card__content">
+                        <h3 class='mb-1'>Feed it back: Software Engineer</h3>
+                        <div class="d-inline-block mb-2">January 2019 - Current</div>
+
+                    </div>
+                </div>
+                <div class="project-card flex-md-row flex-wrap flex-sm-nowrap">
                     <img class="project-card__med-icon mr-2" src='~/assets/companies/shelter.png' style='width:72px;height:72px;'/>
                     <div class="project-card__content">
                         <h3 class='mb-1'>Shelter UK: Backend Developer</h3>
-                        <div class="d-inline-block mb-2">April 2018 - Current</div>
+                        <div class="d-inline-block mb-2">April 2018 - December 2018</div>
                         <p>In my time at Shelter I have been involved in everything from refactoring old code to dealing with a large amount of technical debt. My main focus is around a few internal api servers which provide the backbone of our online services. One of my responsibilities was to reach feature parity with these new servers so we could decommission old and insecure infrastructure.</p>
 
                         I have been involved in a wide range of projects within Shelter across all our product teams including projects involving the following:
