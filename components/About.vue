@@ -1,6 +1,6 @@
 <template lang="html">
     <div>
-        <h1 class='text-center'>About me</h1>
+        <h1 class='text-center'>Welcome</h1>
         <div class="project-card" >
             <div class="d-inline-flex flex-wrap flex-sm-nowrap">
                 <img src="~/assets/me.jpg" style='display:block;width:200px;height:200px;' alt="Picture of Kirsty" class='mr-3 mb-3'>
