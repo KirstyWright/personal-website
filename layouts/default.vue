@@ -14,11 +14,6 @@
                         <a class="nav-link" href="/projects" >Projects</a>
                     </li>
                     <ul class="navbar-nav">
-                        <li class="nav-item" v-bind:class="{'active': $nuxt.$route.name == 'blog'}">
-                            <a class="nav-link" href="/blog">Blog</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
                         <li class="nav-item" v-bind:class="{'active': $nuxt.$route.name == 'cv'}">
                             <a class="nav-link" href="/cv">CV</a>
                         </li>

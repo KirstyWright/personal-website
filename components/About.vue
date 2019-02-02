@@ -7,6 +7,7 @@
                 <div>
                     <p>My name is Kirsty and I make computers do as they are told, most of the time they listen to me and sometimes they don't. Developing is a passion for me, whether its a paid piece of work or a personal project I enjoy and take pride in what I do.</p>
                     <p>At the moment my skills are more focused on backend web systems, but I enjoy working on a wide array of systems and architectures.</p>
+                    <p>I have a big interest in the medical sector and currently voluenteer with the British Red Cross.</p>
                 </div>
             </div>
         </div>
