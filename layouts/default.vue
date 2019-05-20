@@ -27,7 +27,7 @@
         <nuxt/>
         <footer class="footer">
             <div class="container">
-                <span class="text-muted">Kirsty Wright | www.kirstywright.co.uk</span>
+                <span class="text-muted">Kirsty Wright | kirsty.dev</span>
             </div>
         </footer>
     </div>

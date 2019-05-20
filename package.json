@@ -5,7 +5,7 @@
     "author": "KirstyWright <kirsty@evecmdr.com>",
     "private": true,
     "scripts": {
-        "dev": "nuxt",
+        "dev": "node server.js",
         "build": "nuxt build",
         "start": "nuxt start",
         "generate": "nuxt generate",
@@ -14,7 +14,6 @@
     },
     "dependencies": {
         "@nuxtjs/axios": "^5.3.1",
-        "@nuxtjs/blog": "^0.0.1-6",
         "@nuxtjs/google-analytics": "^2.0.2",
         "nuxt": "^1.0.0",
         "nuxt-sass-resources-loader": "^2.0.2"

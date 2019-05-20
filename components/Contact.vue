@@ -1,7 +1,7 @@
 <template lang="html">
     <div>
         <h1 class='text-center'>Contact me</h1>
-        <p class='text-center'>Email: <a href="mailto:kirsty@evecmdr.com">kirsty@evecmdr.com</a><br>Twitter: <a href="https://twitter.com/KirstyWrightWeb">@KirstyWrightWeb</a></p>
+        <p class='text-center'>Email: <a href="mailto:kirsty@kirsty.dev">kirsty@kirsty.dev</a><br>Twitter: <a href="https://twitter.com/KirstyWrightWeb">@KirstyWrightWeb</a></p>
     </div>
 </template>
 
