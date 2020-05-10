@@ -13,7 +13,7 @@
 
 html, body {
     background-color: #45405e;
-    color: #fff;
+    color: #efefef;
 }
 .footer {
     margin-top:20px;

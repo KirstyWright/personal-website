@@ -4,9 +4,8 @@
             <div class="d-inline-flex flex-wrap flex-md-nowrap justify-md-content-center">
                 <img src="~/assets/me.jpg" alt="Picture of Kirsty" class='mr-3 mb-3'>
                 <div>
-                    <p>My name is Kirsty and I make computers do as they are told, most of the time they listen to me and sometimes they don't. Developing is a passion for me, whether its a paid piece of work or a personal project I enjoy and take pride in what I do.</p>
-                    <p>At the moment my skills are more focused on backend web systems, but I enjoy working on a wide array of systems and architectures.</p>
-                    <p>I have a big interest in the medical sector and currently volunteer with the British Red Cross.</p>
+                    <p>My name is Kirsty and I used to make computers do as they are told, most of the time they listen to me and sometimes they don't. Developing is a passion for me, whether its a paid piece of work or a personal project I enjoy and take pride in what I do.</p>
+                    <p>I recently changed careers to work within the Ambulance service and I am planning on continuing on that career path. With regard to developing, I do maintain my skills as a hoby and do occasionally take on work when I have the time.</p>
                 </div>
             </div>
         </div>
@@ -37,5 +36,5 @@ export default {
     height:auto;
     max-width:200px;
   }
-} 
+}
 </style>

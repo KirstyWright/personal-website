@@ -5,10 +5,18 @@
                 <About />
                 <h1 class='text-center mb-4'>Roles</h1>
                 <div class="project-card flex-md-row flex-wrap flex-sm-nowrap">
+                    <img class="project-card__med-icon mr-2" src='~/assets/companies/las.png' style='width:72px;height:72px;'/>
+                    <div class="project-card__content">
+                        <h3 class='mb-1'>London Ambulance Service: Trainee Emergency Ambulance Crew</h3>
+                        <div class="d-inline-block mb-2">August 2019 - Current</div>
+
+                    </div>
+                </div>
+                <div class="project-card flex-md-row flex-wrap flex-sm-nowrap">
                     <img class="project-card__med-icon mr-2" src='~/assets/companies/fib.png' style='width:72px;height:72px;'/>
                     <div class="project-card__content">
                         <h3 class='mb-1'>Feed it back: Software Engineer</h3>
-                        <div class="d-inline-block mb-2">January 2019 - Current</div>
+                        <div class="d-inline-block mb-2">January 2019 - August 2019</div>
 
                     </div>
                 </div>

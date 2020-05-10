@@ -1,8 +1,11 @@
-const { Nuxt, Builder } = require('nuxt')
+const {
+    Nuxt,
+    Builder
+} = require('nuxt')
 
-const https = require('https')
-const fs = require('fs')
 const isProd = (process.env.NODE_ENV === 'production')
+const http = (isProd ? require('https') : require('http'))
+const fs = require('fs')
 const port = process.env.PORT || 3000
 
 // We instantiate nuxt.js with the options
@@ -14,26 +17,28 @@ const nuxt = new Nuxt(config)
 
 // Build only in dev mode with hot-reloading
 if (config.dev) {
-  new Builder(nuxt).build()
-    .then(listen)
-    .catch((error) => {
-      console.error(error)
-      process.exit(1)
-    })
-}
-else {
-  listen()
+    new Builder(nuxt).build()
+        .then(listen)
+        .catch((error) => {
+            console.error(error)
+            process.exit(1)
+        })
+} else {
+    listen()
 }
 
 function listen() {
+    let options = {}
+    if (isProd) {
+        options = {
+            key: fs.readFileSync('/etc/letsencrypt/live/kirsty.dev/privkey.pem'),
+            cert: fs.readFileSync('/etc/letsencrypt/live/kirsty.dev/cert.pem')
+        };
+    }
 
-  const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/kirsty.dev/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/kirsty.dev/cert.pem')
-  };
 
-  https
-    .createServer(options, nuxt.render)
-    .listen(port)
-  console.log('Server listening on `localhost:' + port + '`.')
+    http
+        .createServer(options, nuxt.render)
+        .listen(port)
+    console.log('Server listening on `localhost:' + port + '`.')
 }
