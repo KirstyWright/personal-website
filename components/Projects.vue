@@ -5,12 +5,44 @@
             <div class="col-md-12">
                 <div class="project-card flex-md-row">
                     <div class="project-card__content">
+                        <h3>CAD</h3>
+                        <div>
+                            <p>
+                                CAD is a web based computer aided dispatch system for a Fivem based roleplay community. It comprises of a VueJs based frontend with a PHP backend that utilises Slim and Eloquent which is attached to a MariaDB database. It is designed to give upwards of 50 concurent users a live updating management system which utilises websockets to rapidly update users when information changes.<br><br>
+                                Whilst the code is currently closed source, I am looking at making a open version in the future.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card flex-md-row">
+                    <div class="project-card__content">
+                        <h3>Screeps</h3>
+                        <div>
+                            <p>
+                                Screeps is a RTS game that is powered by javascript code that runs in a constant loop. Players use their Javascript code to control little figures (screeps) in an attempt to fight other players, develop land and eventually form an empire (not that I got that far).<br><br>For me, Screeps was an adventure into attempting to build a Javascript based bot whilst also allowing me to learn Typescript. I never did get far into the game but I enjoy the time sync it gave me. The bot can be found <a href='https://github.com/KirstyWright/screepsAI'>here</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card flex-md-row">
+                    <div class="project-card__content">
+                        <h3>Quiz</h3>
+                        <div>
+                            <p>
+                                This was a simple quiz app that runs on VueJs that was developed during my driving course within the Ambulance service as a way we could test ourselves with our roadsigns knowledge.
+                                <br><br>The code can be found <a href='https://github.com/KirstyWright/quiz'>here</a> with the application being visible <a href='https://quiz.kirsty.dev'>here</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card flex-md-row">
+                    <div class="project-card__content">
                         <div class="mb-3">
                             <img class="project-card__med-icon mr-2" src='~/assets/projects/clevergirls.png' style='max-width:250px;height:auto;border-radius:5px;'/>
                         </div>
                         <div>
                             <p>
-                                Clevergirls is an online gaming community and news site dedicated to promoting and informing players about online games that interest its audience. Content includes articles, podcasts, streaming and a host of other features yet to be released. I worked as the sole developer on the project and was tasked with building both the front and backend of the site.
+                                Clevergirls was an online gaming community and news site dedicated to promoting and informing players about online games that interest its audience. Content included articles, podcasts and streams. I worked as the sole developer on the project and was tasked with building both the front and backend of the site.
                             </p>
                             <p>
                                 The frontend was customer facing and displayed articles and other content that was written by authors on the site. The backend contained a simple system for content authors to write articles and upload content. This was then proof read by editors who would make edits before submitting the finished pieces to the site.
@@ -36,7 +68,7 @@
                             <img class="project-card__med-icon mr-2" src='~/assets/projects/polaris.png' style='max-width:200px;height:auto;border-radius:5px;'/>
                         </div>
                         <div>
-                            <p>Polaris is a automated assistant for an intelligence network for the game EVEonline, it runs and collects information from automated relays and external sources.</p>
+                            <p>Polaris was an automated assistant for an intelligence network for the game EVEonline, it ran and collected information from automated relays and external sources.</p>
                             <p>
                                 Components of Polaris include:
                             </p>
