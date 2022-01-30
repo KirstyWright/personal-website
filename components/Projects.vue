@@ -33,16 +33,6 @@
                 <div class="project-card flex-md-row">
                     <div class="project-card__content">
                         <div class="mb-3">
-                            <img class="project-card__med-icon mr-2" src='~/assets/projects/safe-scene.png' style='max-width:150px;height:auto;border-radius:5px;'/>
-                        </div>
-                        <div>
-                            <p>Safe Scene UK is an organisation for the sharing information within the BDSM, fetish, sex positive and similar groups. Primarily the information shared in warnings regarding predators and offenders operating within our communities.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card flex-md-row">
-                    <div class="project-card__content">
-                        <div class="mb-3">
                             <img class="project-card__med-icon mr-2" src='~/assets/projects/polaris.png' style='max-width:200px;height:auto;border-radius:5px;'/>
                         </div>
                         <div>

@@ -36,7 +36,7 @@ export default {
                 laravel: {
                     name: 'Laravel',
                     logo: require('~/assets/icons/laravel-plain-wordmark.svg'),
-                    content: 'Laravel & Lumen both make developing PHP MVCs much faster from the get go. The wide breadth of functions and features they bring to the table allow you to very quickly build applications which would otherwise take a long time to build the foundation. They do have some downsides of course but overall I enjoy using them both to build more complex PHP applications from APIs to more specialised projects like Polaris or Safe Scene.'
+                    content: 'Laravel & Lumen both make developing PHP MVCs much faster from the get go. The wide breadth of functions and features they bring to the table allow you to very quickly build applications which would otherwise take a long time to build the foundation. They do have some downsides of course but overall I enjoy using them both to build more complex PHP applications from APIs to more specialised projects like Polaris..'
                 },
                 mysql: {
                     name: 'MySQL',

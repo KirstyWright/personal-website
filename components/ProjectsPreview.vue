@@ -5,7 +5,6 @@
             <div class="col-md-12 justify-content-center d-flex align-items-center">
                 <a href="/projects">
                     <img class="project-card__med-icon mr-2" src='~/assets/projects/clevergirls.png' style='max-width:250px;height:auto;border-radius:5px;'/>
-                    <img class="project-card__med-icon mr-2" src='~/assets/projects/safe-scene.png' style='max-width:150px;height:auto;border-radius:5px;'/>
                     <img class="project-card__med-icon mr-2" src='~/assets/projects/polaris.png' style='max-width:200px;height:auto;border-radius:5px;'/>
                 </a>
             </div>
