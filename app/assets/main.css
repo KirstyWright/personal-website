@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #34ca46;
+  --color-bg: #45405e;
+  --color-bg-card: rgba(0, 0, 0, 0.2);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  background-color: var(--color-bg);
+  color: #efefef;
+  font-family: var(--font-sans);
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--color-brand);
+}

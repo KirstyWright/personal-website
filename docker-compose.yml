@@ -1,0 +1,25 @@
+# Reference compose file for snapmedic-02
+# Copy to /opt/kirsty-portfolio/docker-compose.yml on the server.
+#
+# Reverse-proxy / TLS labels are server-specific — adjust the labels block
+# below to match whatever Traefik/Caddy/nginx setup runs in front of the
+# other apps on snapmedic-02.
+
+services:
+  web:
+    image: ghcr.io/kirstywright/personal-website:latest
+    container_name: kirsty-portfolio
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8086:8080"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 8080
+      NUXT_PUBLIC_SITE_URL: https://kirsty.dev
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
