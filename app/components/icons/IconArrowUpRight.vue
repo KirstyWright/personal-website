@@ -1,0 +1,21 @@
+<template>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    class="inline-block"
+  >
+    <line
+      x1="6"
+      y1="18"
+      x2="18"
+      y2="6"
+    />
+    <polyline points="9 6 18 6 18 15" />
+  </svg>
+</template>

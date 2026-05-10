@@ -4,14 +4,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   modules: [
     '@nuxtjs/sitemap',
-    '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/image',
     '@nuxtjs/google-fonts'
-  ],
-
-  plugins: [
-    '~/plugins/fontawesome.ts'
   ],
 
   devtools: { enabled: true },
@@ -22,8 +17,8 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Kirsty Wright — software engineer, paramedic, hobbyist developer.' },
-        { name: 'theme-color', content: '#34ca46' },
+        { name: 'description', content: 'Kirsty Wright — paramedic with the London Ambulance Service and creator of SnapMedic, a clinical toolkit for UK ambulance clinicians.' },
+        { name: 'theme-color', content: '#fafaf7' },
         { property: 'og:locale', content: 'en_GB' },
         { property: 'og:site_name', content: 'Kirsty Wright' },
         { property: 'og:type', content: 'website' },
@@ -35,17 +30,12 @@ export default defineNuxtConfig({
     }
   },
 
-  css: [
-    '~/assets/main.css',
-    '@fortawesome/fontawesome-svg-core/styles.css'
-  ],
+  css: ['~/assets/main.css'],
 
   site: {
     url: 'https://kirsty.dev',
     name: 'Kirsty Wright'
   },
-
-  content: {},
 
   future: { compatibilityVersion: 4 },
 
@@ -68,7 +58,11 @@ export default defineNuxtConfig({
   },
 
   googleFonts: {
-    families: { Inter: [300, 400, 500, 600, 700] },
+    families: {
+      'Fraunces': [500],
+      'Inter': [400, 600],
+      'JetBrains Mono': [400]
+    },
     display: 'swap',
     prefetch: true,
     preconnect: true,

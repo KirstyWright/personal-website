@@ -1,123 +1,139 @@
 <script setup lang="ts">
+import SectionEyebrow from '~/components/SectionEyebrow.vue'
+import RoleEntry from '~/components/RoleEntry.vue'
+
 interface Role {
   title: string
   period: string
-  logo?: string
   body?: string
 }
 
 useHead({
-  title: 'CV - Kirsty Wright',
-  meta: [{ name: 'description', content: 'CV for Kirsty Wright.' }]
+  title: 'CV — Kirsty Wright',
+  meta: [
+    { name: 'description', content: 'CV for Kirsty Wright — paramedic with the London Ambulance Service and creator of SnapMedic.' }
+  ]
 })
 
-const roles: Role[] = [
+const experience: Role[] = [
   {
-    title: 'London Ambulance Service: Emergency Ambulance Crew',
-    period: 'August 2019 - Current',
-    logo: '/images/companies/las.png',
-    body: `<p>I joined LAS as a Trainee Emergency Ambulance Crew in 2019 and spent my first 6 months in a classroom followed by 12 months responding as a 999 ambulance alongside a qualified EAC or a Paramedic.</p>
-<p>Following my qualification in February 2020 I have worked with trainees myself and in late 2020, as part of the response to the COVID pandemic, I worked on a covid support line with a police officer responding to 999 calls as the sole clinician.</p>
-<p>Each shift I attend to patients in a variety of settings and assess them before providing appropriate management ranging from direct PPCI pathways to referrals to primary care. Most patients I attend can be managed by myself but some require advanced clinical care, working as part of a multidisciplinary team in a high-pressure environment to provide the best medical care to multiple casualties or time-critical patients.</p>
-<p>I am currently studying for my Paramedic Science degree whilst remaining employed with the trust.</p>`
+    title: 'SnapMedic — Creator',
+    period: 'Jun 2025 → now',
+    body: '<p>SnapMedic is a mobile and web application built for UK ambulance clinicians, covering clinical tools, ECG interpretation, OSCE practice, flashcards, and staff welfare resources. From zero to 10,000+ downloads.</p><p>As a solo founder I manage every part of the product — development, infrastructure, B2B partnerships and marketing — alongside full-time shift work as a paramedic.</p>'
   },
   {
-    title: 'Feed it back: Software Engineer',
-    period: 'January 2019 - August 2019',
-    logo: '/images/companies/fib.png'
+    title: 'London Ambulance Service NHS Trust — Paramedic',
+    period: 'Oct 2023 → now',
+    body: '<p>Each shift I attend to patients in a variety of settings and assess them before providing appropriate management — from direct PPCI pathways to referrals to primary care. Most patients I attend can be managed by me alone, but some require advanced clinical care, working as part of a multidisciplinary team in a high-pressure environment for time-critical patients.</p>'
   },
   {
-    title: 'Shelter UK: Backend Developer',
-    period: 'April 2018 - December 2018',
-    logo: '/images/companies/shelter.png',
-    body: `<p>In my time at Shelter I was involved in everything from refactoring old code to dealing with a large amount of technical debt. My main focus was around a few internal API servers which provided the backbone of online services. One of my responsibilities was to reach feature parity with these new servers so we could decommission old and insecure infrastructure.</p>
-<p>I was involved in a wide range of projects across all product teams including:</p>
-<ul class="list-disc pl-5 space-y-1">
-  <li>Automated scripts to bridge the gap between systems.</li>
-  <li>Compiling data exports &amp; reports using Python.</li>
-  <li>Building monitoring tools for internal &amp; external infrastructure.</li>
-  <li>Developing internal APIs using Laravel &amp; Lumen.</li>
-  <li>Helping design &amp; implement new systems.</li>
-</ul>`
+    title: 'London Ambulance Service NHS Trust — Student Paramedic',
+    period: 'Oct 2021 → Oct 2023',
+    body: '<p>Two-year work-based BSc programme at the University of Cumbria, completed alongside frontline shifts.</p>'
   },
   {
-    title: 'Diverse Interactive: Full Stack Developer',
-    period: 'January 2018 - March 2018',
-    logo: '/images/companies/diverse.png',
-    body: '<p>Most of my role consisted of building Laravel-based applications to help manage Apps and Systems. I also worked more with Linux servers and AWS cloud hosting.</p>'
+    title: 'London Ambulance Service NHS Trust — Emergency Medical Technician',
+    period: 'Mar 2021 → Oct 2023',
+    body: '<p>Qualified EMT working frontline 999 response in London. Followed qualification I worked with trainees myself and spent six months on the COVID support line, crewed with a police officer responding to 999 calls.</p>'
   },
   {
-    title: 'Mintedbox: Web Developer',
-    period: 'July 2015 - December 2017',
-    logo: '/images/companies/minted.png',
-    body: `<p>I was initially employed alongside my apprenticeship and then stayed on as a full stack developer.</p>
-<p>Whilst my role was full stack, my projects mainly consisted of websites requiring bespoke systems or admin interfaces. I gained experience building mobile apps via Cordova as well as PHP-based APIs to go with them. I built many sites from ecommerce sites with third-party inventory management integrations to booking systems for hotels.</p>`
+    title: 'London Ambulance Service NHS Trust — Trainee Emergency Ambulance Crew',
+    period: 'Aug 2019 → Mar 2021',
+    body: '<p>Six months in the classroom, then twelve months responding as a 999 ambulance alongside a qualified EAC or paramedic.</p>'
+  },
+  {
+    title: 'Feed It Back — Software Engineer',
+    period: 'Jan 2019 → Aug 2019'
+  },
+  {
+    title: 'Shelter UK — Backend Developer',
+    period: 'Apr 2018 → Dec 2018',
+    body: '<p>Worked across product teams refactoring legacy code and building the internal APIs that backed Shelter\'s online services. Reaching feature parity with the new servers let us decommission older, less secure infrastructure.</p><ul class="list-disc pl-5 space-y-1"><li>Automation scripts to bridge disparate systems.</li><li>Data exports and reporting in Python.</li><li>Monitoring tools for internal and external infrastructure.</li><li>Internal APIs in Laravel and Lumen.</li></ul>'
+  },
+  {
+    title: 'Minted Box — Web Developer',
+    period: 'Jul 2015 → Dec 2017',
+    body: '<p>Initially employed alongside my apprenticeship, then stayed on as a full-stack developer. Mostly bespoke websites with custom admin systems — ecommerce with third-party inventory integrations, hotel booking platforms, and mobile apps via Cordova with PHP APIs to match.</p>'
+  }
+]
+
+const education: Role[] = [
+  {
+    title: 'University of Cumbria — BSc Paramedic Science',
+    period: 'Oct 2021 → Oct 2023'
+  },
+  {
+    title: 'QA Apprenticeships — Level 3 IT Apprenticeship, Computing',
+    period: '2015 → 2016'
+  },
+  {
+    title: 'Ashcombe Sixth Form — AS-Level Computing',
+    period: '2014 → 2015'
   }
 ]
 
 const volunteering: Role[] = [
   {
-    title: 'St John Ambulance: Ambulance Technician',
-    period: 'January 2020 - Current',
-    body: '<p>After the BRC stopped its Event First Aid department, I along with many other volunteers moved across to St John Ambulance where I continue to volunteer my time to assist at events.</p>'
+    title: 'St John Ambulance — Ambulance Technician',
+    period: 'Jan 2020 → now',
+    body: '<p>Moved across to St John Ambulance after the BRC closed its Event First Aid department, continuing to volunteer at events.</p>'
   },
   {
-    title: 'British Red Cross: Medical volunteering',
-    period: 'January 2018 - January 2020',
-    body: '<p>I volunteered with the BRC before I joined the ambulance service at a wide variety of events and achieved several in-house qualifications in relation to resuscitation.</p>'
+    title: 'British Red Cross — Medical volunteering',
+    period: 'Jan 2018 → Jan 2020',
+    body: '<p>Volunteered across a wide range of events and gained several in-house resuscitation qualifications before moving to LAS and St John.</p>'
   }
 ]
 </script>
 
 <template>
-  <div class="space-y-12">
-    <About />
+  <div class="mx-auto w-full max-w-3xl px-6 py-12 md:py-16">
+    <SectionEyebrow label="CV" />
+    <h1 class="text-h1 mb-8 max-w-[26ch]">
+      Software, then ambulances, then both.
+    </h1>
+    <p class="text-lead mb-12 max-w-[60ch]">
+      Former software engineer, now a paramedic with the London Ambulance Service. I founded <a
+        href="https://snapmedic.app"
+        target="_blank"
+        rel="noopener noreferrer"
+      >SnapMedic</a> in 2025 to bring both worlds together — clinical tools, ECG interpretation, OSCE practice, flashcards and welfare resources for UK ambulance clinicians.
+    </p>
 
-    <section>
-      <h1 class="text-3xl font-bold text-center mb-6">Roles</h1>
-      <article
-        v-for="role in roles"
+    <section class="mt-14">
+      <SectionEyebrow
+        ordinal="01"
+        label="Experience"
+      />
+      <RoleEntry
+        v-for="role in experience"
         :key="role.title"
-        class="bg-[var(--color-bg-card)] p-4 md:p-6 rounded mb-6"
-      >
-        <div class="flex flex-col md:flex-row gap-4">
-          <NuxtImg
-            v-if="role.logo"
-            :src="role.logo"
-            :alt="role.title"
-            class="w-[72px] h-[72px] flex-shrink-0 rounded bg-white p-1"
-            width="72"
-            height="72"
-            format="webp"
-          />
-          <div class="flex-1">
-            <h3 class="text-xl font-semibold mb-1">{{ role.title }}</h3>
-            <div class="text-sm opacity-70 mb-3">{{ role.period }}</div>
-            <div v-if="role.body" class="space-y-3" v-html="role.body" />
-          </div>
-        </div>
-      </article>
+        :role="role"
+      />
     </section>
 
-    <section id="projects">
-      <Projects />
+    <section class="mt-16">
+      <SectionEyebrow
+        ordinal="02"
+        label="Education"
+      />
+      <RoleEntry
+        v-for="role in education"
+        :key="role.title"
+        :role="role"
+      />
     </section>
 
-    <section id="interests">
-      <Interest />
-    </section>
-
-    <section>
-      <h1 class="text-3xl font-bold text-center mb-6">Volunteering</h1>
-      <article
+    <section class="mt-16">
+      <SectionEyebrow
+        ordinal="03"
+        label="Volunteering"
+      />
+      <RoleEntry
         v-for="role in volunteering"
         :key="role.title"
-        class="bg-[var(--color-bg-card)] p-4 md:p-6 rounded mb-6"
-      >
-        <h3 class="text-xl font-semibold mb-1">{{ role.title }}</h3>
-        <div class="text-sm opacity-70 mb-3">{{ role.period }}</div>
-        <div v-if="role.body" class="space-y-3" v-html="role.body" />
-      </article>
+        :role="role"
+      />
     </section>
   </div>
 </template>
