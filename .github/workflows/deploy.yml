@@ -150,7 +150,9 @@ jobs:
         run: |
           for i in $(seq 1 10); do
             CODE=$(curl -sS -o /dev/null -w '%{{http_code}}' --max-time 10 https://kirsty.dev/ || echo 000)
-            case "$CODE" in 200|301|302) echo "::notice::kirsty.dev healthy ($CODE)"; exit 0;; esac
+            # Strictly 200: this URL returns 200 directly, so a 3xx would mean
+            # the ingress is misrouting — exactly what this check should catch.
+            [ "$CODE" = "200" ] && { echo "::notice::kirsty.dev healthy ($CODE)"; exit 0; }
             echo "attempt $i -> $CODE"; sleep 6
           done
           echo "::error::kirsty.dev did not respond healthily"; exit 1
