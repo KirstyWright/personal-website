@@ -159,7 +159,7 @@ jobs:
         if: vars.K8S_ENABLED == 'true'
         run: |
           for i in $(seq 1 10); do
-            CODE=$(curl -sS -o /dev/null -w '%{{http_code}}' --max-time 10 https://kirsty.dev/ || echo 000)
+            CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 https://kirsty.dev/ || echo 000)
             # Strictly 200: this URL returns 200 directly, so a 3xx would mean
             # the ingress is misrouting — exactly what this check should catch.
             [ "$CODE" = "200" ] && { echo "::notice::kirsty.dev healthy ($CODE)"; exit 0; }
