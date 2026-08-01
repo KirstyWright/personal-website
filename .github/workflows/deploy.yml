@@ -11,6 +11,13 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: kirstywright/personal-website
 
+# Serialise deploys per ref. Without this, two runs can interleave and a slower
+# one can overwrite (or roll back) the image a newer run just deployed.
+# cancel-in-progress is false: never abandon a rollout midway.
+concurrency:
+  group: deploy-kirsty-portfolio-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Build and Push Docker Image
@@ -18,10 +25,18 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      # deploy is a separate job with no checkout; carry the tag across.
+      sha: ${{ steps.k8stag.outputs.sha }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Compute immutable image tag
+        id: k8stag
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -36,7 +51,13 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
+            # Uses the same computed value the deploy job consumes. Deriving the
+            # tag here and the deploy reference elsewhere is two independent
+            # definitions of "short sha" that can silently diverge.
+            type=raw,value=prod-${{ steps.k8stag.outputs.sha }}
+            type=raw,value=prod-latest,enable={{is_default_branch}}
+            # :latest only while snapmedic-02 still pulls by that tag.
+            type=raw,value=latest,enable=${{ vars.COMPOSE_ENABLED != 'false' }}
             type=sha,format=short
 
       - name: Build and push Docker image
@@ -61,13 +82,20 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
 
-      - name: Deploy to production server
+      - name: Deploy to snapmedic-02 (optional redundancy)
+        if: vars.COMPOSE_ENABLED != 'false'
+        continue-on-error: true
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
-          echo "$SSH_KEY" > /tmp/deploy_key
-          chmod 600 /tmp/deploy_key
-          ssh -i /tmp/deploy_key \
+          # mktemp + trap: a fixed path is predictable, and the plain `rm` at the
+          # end never runs if ssh exits non-zero — leaving a private key on the
+          # runner. The trap fires on any exit path.
+          KEY_FILE=$(mktemp)
+          trap 'rm -f "$KEY_FILE"' EXIT INT TERM
+          chmod 600 "$KEY_FILE"
+          printf '%s' "$SSH_KEY" > "$KEY_FILE"
+          ssh -i "$KEY_FILE" \
             -o StrictHostKeyChecking=no \
             -o UserKnownHostsFile=/dev/null \
             root@snapmedic-02 \
@@ -76,4 +104,62 @@ jobs:
              docker compose up -d --remove-orphans && \
              docker image prune -f && \
              echo "Deployed: $(docker compose ps --format '"'"'table {{.Name}}\t{{.Status}}'"'"')"'
-          rm /tmp/deploy_key
+
+      # ── Dual deploy ──────────────────────────────────────────────────────
+      # Kubernetes (Civo) is primary. snapmedic-02 above is optional redundancy
+      # for a few weeks and may fail without failing the build.
+      #   gh variable set K8S_ENABLED     --body true
+      #   gh variable set COMPOSE_ENABLED --body false   # when the box retires
+      # ─────────────────────────────────────────────────────────────────────
+
+
+      - name: Setup kubectl
+        if: vars.K8S_ENABLED == 'true'
+        uses: azure/setup-kubectl@v4
+
+      - name: Deploy to Kubernetes
+        if: vars.K8S_ENABLED == 'true'
+        env:
+          KUBECONFIG_B64: ${{ secrets.KUBECONFIG_B64 }}
+          IMAGE_REF: ghcr.io/kirstywright/personal-website:prod-${{ needs.build.outputs.sha }}
+        run: |
+          set -euo pipefail
+          # umask BEFORE mkdir — setting it afterwards protects only the file,
+          # leaving the .kube directory itself world-readable.
+          umask 077
+          mkdir -p "$RUNNER_TEMP/.kube"
+          echo "$KUBECONFIG_B64" | base64 -d > "$RUNNER_TEMP/.kube/config"
+          export KUBECONFIG="$RUNNER_TEMP/.kube/config"
+          trap 'rm -f "$RUNNER_TEMP/.kube/config"' EXIT
+
+          PREV=$(kubectl get deploy kirsty-portfolio -n personal \
+            -o jsonpath='{{.spec.template.spec.containers[?(@.name=="nuxt")].image}}')
+          echo "::notice::current=$PREV new=$IMAGE_REF"
+
+          # Annotate first: it does not touch the pod template so it triggers no
+          # rollout, and doing it after `set image` means a failed annotate would
+          # trip `set -e` before rollout status/undo could run.
+          kubectl annotate deployment/kirsty-portfolio -n personal --overwrite \
+            kubernetes.io/change-cause="run ${{ github.run_number }} @ ${{ github.sha }}"
+
+          kubectl set image deployment/kirsty-portfolio nuxt="$IMAGE_REF" -n personal
+
+          if ! kubectl rollout status deployment/kirsty-portfolio -n personal --timeout=300s; then
+            echo "::error::rollout failed — reverting to $PREV"
+            kubectl logs -n personal -l app=kirsty-portfolio --tail=100 --all-containers || true
+            kubectl rollout undo deployment/kirsty-portfolio -n personal
+            kubectl rollout status deployment/kirsty-portfolio -n personal --timeout=180s
+            exit 1
+          fi
+
+      - name: Verify kirsty.dev is serving
+        if: vars.K8S_ENABLED == 'true'
+        run: |
+          for i in $(seq 1 10); do
+            CODE=$(curl -sS -o /dev/null -w '%{{http_code}}' --max-time 10 https://kirsty.dev/ || echo 000)
+            # Strictly 200: this URL returns 200 directly, so a 3xx would mean
+            # the ingress is misrouting — exactly what this check should catch.
+            [ "$CODE" = "200" ] && { echo "::notice::kirsty.dev healthy ($CODE)"; exit 0; }
+            echo "attempt $i -> $CODE"; sleep 6
+          done
+          echo "::error::kirsty.dev did not respond healthily"; exit 1
