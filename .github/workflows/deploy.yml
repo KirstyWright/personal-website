@@ -119,9 +119,13 @@ jobs:
             -o jsonpath='{{.spec.template.spec.containers[?(@.name=="nuxt")].image}}')
           echo "::notice::current=$PREV new=$IMAGE_REF"
 
-          kubectl set image deployment/kirsty-portfolio nuxt="$IMAGE_REF" -n personal
+          # Annotate first: it does not touch the pod template so it triggers no
+          # rollout, and doing it after `set image` means a failed annotate would
+          # trip `set -e` before rollout status/undo could run.
           kubectl annotate deployment/kirsty-portfolio -n personal --overwrite \
             kubernetes.io/change-cause="run ${{ github.run_number }} @ ${{ github.sha }}"
+
+          kubectl set image deployment/kirsty-portfolio nuxt="$IMAGE_REF" -n personal
 
           if ! kubectl rollout status deployment/kirsty-portfolio -n personal --timeout=300s; then
             echo "::error::rollout failed — reverting to $PREV"
