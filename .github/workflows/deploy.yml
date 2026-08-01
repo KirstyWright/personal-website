@@ -136,7 +136,7 @@ jobs:
           trap 'rm -f "$RUNNER_TEMP/.kube/config"' EXIT
 
           PREV=$(kubectl get deploy kirsty-portfolio -n personal \
-            -o jsonpath='{{.spec.template.spec.containers[?(@.name=="nuxt")].image}}')
+            -o jsonpath='{.spec.template.spec.containers[?(@.name=="nuxt")].image}')
           echo "::notice::current=$PREV new=$IMAGE_REF"
 
           # Annotate first: it does not touch the pod template so it triggers no
