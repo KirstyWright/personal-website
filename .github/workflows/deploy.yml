@@ -18,10 +18,18 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      # deploy is a separate job with no checkout; carry the tag across.
+      sha: ${{ steps.k8stag.outputs.sha }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Compute immutable image tag
+        id: k8stag
+        run: echo "sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -36,7 +44,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=prod-{{sha}}
+            type=raw,value=prod-latest,enable={{is_default_branch}}
+            # :latest only while snapmedic-02 still pulls by that tag.
+            type=raw,value=latest,enable=${{ vars.COMPOSE_ENABLED != 'false' }}
             type=sha,format=short
 
       - name: Build and push Docker image
@@ -61,7 +72,9 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
 
-      - name: Deploy to production server
+      - name: Deploy to snapmedic-02 (optional redundancy)
+        if: vars.COMPOSE_ENABLED != 'false'
+        continue-on-error: true
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
@@ -77,3 +90,53 @@ jobs:
              docker image prune -f && \
              echo "Deployed: $(docker compose ps --format '"'"'table {{.Name}}\t{{.Status}}'"'"')"'
           rm /tmp/deploy_key
+
+      # ── Dual deploy ──────────────────────────────────────────────────────
+      # Kubernetes (Civo) is primary. snapmedic-02 above is optional redundancy
+      # for a few weeks and may fail without failing the build.
+      #   gh variable set K8S_ENABLED     --body true
+      #   gh variable set COMPOSE_ENABLED --body false   # when the box retires
+      # ─────────────────────────────────────────────────────────────────────
+
+
+      - name: Setup kubectl
+        if: vars.K8S_ENABLED == 'true'
+        uses: azure/setup-kubectl@v4
+
+      - name: Deploy to Kubernetes
+        if: vars.K8S_ENABLED == 'true'
+        env:
+          KUBECONFIG_B64: ${{ secrets.KUBECONFIG_B64 }}
+          IMAGE_REF: ghcr.io/kirstywright/personal-website:prod-${{ needs.build.outputs.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/.kube"; umask 077
+          echo "$KUBECONFIG_B64" | base64 -d > "$RUNNER_TEMP/.kube/config"
+          export KUBECONFIG="$RUNNER_TEMP/.kube/config"
+          trap 'rm -f "$RUNNER_TEMP/.kube/config"' EXIT
+
+          PREV=$(kubectl get deploy kirsty-portfolio -n personal \
+            -o jsonpath='{{.spec.template.spec.containers[?(@.name=="nuxt")].image}}')
+          echo "::notice::current=$PREV new=$IMAGE_REF"
+
+          kubectl set image deployment/kirsty-portfolio nuxt="$IMAGE_REF" -n personal
+          kubectl annotate deployment/kirsty-portfolio -n personal --overwrite \
+            kubernetes.io/change-cause="run ${{ github.run_number }} @ ${{ github.sha }}"
+
+          if ! kubectl rollout status deployment/kirsty-portfolio -n personal --timeout=300s; then
+            echo "::error::rollout failed — reverting to $PREV"
+            kubectl logs -n personal -l app=kirsty-portfolio --tail=100 --all-containers || true
+            kubectl rollout undo deployment/kirsty-portfolio -n personal
+            kubectl rollout status deployment/kirsty-portfolio -n personal --timeout=180s
+            exit 1
+          fi
+
+      - name: Verify kirsty.dev is serving
+        if: vars.K8S_ENABLED == 'true'
+        run: |
+          for i in $(seq 1 10); do
+            CODE=$(curl -sS -o /dev/null -w '%{{http_code}}' --max-time 10 https://kirsty.dev/ || echo 000)
+            case "$CODE" in 200|301|302) echo "::notice::kirsty.dev healthy ($CODE)"; exit 0;; esac
+            echo "attempt $i -> $CODE"; sleep 6
+          done
+          echo "::error::kirsty.dev did not respond healthily"; exit 1
