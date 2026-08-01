@@ -51,7 +51,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=prod-{{sha}}
+            # Uses the same computed value the deploy job consumes. Deriving the
+            # tag here and the deploy reference elsewhere is two independent
+            # definitions of "short sha" that can silently diverge.
+            type=raw,value=prod-${{ steps.k8stag.outputs.sha }}
             type=raw,value=prod-latest,enable={{is_default_branch}}
             # :latest only while snapmedic-02 still pulls by that tag.
             type=raw,value=latest,enable=${{ vars.COMPOSE_ENABLED != 'false' }}
@@ -85,9 +88,14 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
         run: |
-          echo "$SSH_KEY" > /tmp/deploy_key
-          chmod 600 /tmp/deploy_key
-          ssh -i /tmp/deploy_key \
+          # mktemp + trap: a fixed path is predictable, and the plain `rm` at the
+          # end never runs if ssh exits non-zero — leaving a private key on the
+          # runner. The trap fires on any exit path.
+          KEY_FILE=$(mktemp)
+          trap 'rm -f "$KEY_FILE"' EXIT INT TERM
+          chmod 600 "$KEY_FILE"
+          printf '%s' "$SSH_KEY" > "$KEY_FILE"
+          ssh -i "$KEY_FILE" \
             -o StrictHostKeyChecking=no \
             -o UserKnownHostsFile=/dev/null \
             root@snapmedic-02 \
@@ -96,7 +104,6 @@ jobs:
              docker compose up -d --remove-orphans && \
              docker image prune -f && \
              echo "Deployed: $(docker compose ps --format '"'"'table {{.Name}}\t{{.Status}}'"'"')"'
-          rm /tmp/deploy_key
 
       # ── Dual deploy ──────────────────────────────────────────────────────
       # Kubernetes (Civo) is primary. snapmedic-02 above is optional redundancy
