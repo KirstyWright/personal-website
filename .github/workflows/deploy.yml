@@ -94,7 +94,10 @@ jobs:
           KEY_FILE=$(mktemp)
           trap 'rm -f "$KEY_FILE"' EXIT INT TERM
           chmod 600 "$KEY_FILE"
-          printf '%s' "$SSH_KEY" > "$KEY_FILE"
+          # NOTE the trailing \n — OpenSSH rejects a key without it
+          # ("error in libcrypto"), and continue-on-error masks that into a
+          # green build that deployed nothing.
+          printf '%s\n' "$SSH_KEY" > "$KEY_FILE"
           ssh -i "$KEY_FILE" \
             -o StrictHostKeyChecking=no \
             -o UserKnownHostsFile=/dev/null \
