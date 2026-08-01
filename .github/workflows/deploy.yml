@@ -11,6 +11,13 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: kirstywright/personal-website
 
+# Serialise deploys per ref. Without this, two runs can interleave and a slower
+# one can overwrite (or roll back) the image a newer run just deployed.
+# cancel-in-progress is false: never abandon a rollout midway.
+concurrency:
+  group: deploy-kirsty-portfolio-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Build and Push Docker Image
@@ -110,7 +117,10 @@ jobs:
           IMAGE_REF: ghcr.io/kirstywright/personal-website:prod-${{ needs.build.outputs.sha }}
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/.kube"; umask 077
+          # umask BEFORE mkdir — setting it afterwards protects only the file,
+          # leaving the .kube directory itself world-readable.
+          umask 077
+          mkdir -p "$RUNNER_TEMP/.kube"
           echo "$KUBECONFIG_B64" | base64 -d > "$RUNNER_TEMP/.kube/config"
           export KUBECONFIG="$RUNNER_TEMP/.kube/config"
           trap 'rm -f "$RUNNER_TEMP/.kube/config"' EXIT
