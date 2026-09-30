@@ -31,6 +31,18 @@ Personal site for Kirsty Wright. Single-page hub (hero + SnapMedic feature + pro
 - `bun run build` — production build
 - `bun run preview` — preview production build
 
+## /b5parking (hidden page)
+
+Parking guide for **Hillingdon Ambulance Station staff** (London Ambulance Service colleagues), reached by a QR code inside the station and a link in a group chat. Staff lost their on-site parking. Purpose: the official parking option, and which nearby roads have permit restrictions for a given shift. Nothing else (no public visitor info, no 999 line). **Never link to it from the site, never add it to the sitemap, never loosen its crawler rules.**
+
+- Page: `app/pages/b5parking.vue`, layout `bare`, map in `app/components/parking/StationMap.client.vue` (Leaflet + OSM tiles, client-only).
+- Shifts: Weekday day / Night / Weekend (`SHIFTS` in `app/data/b5parking/index.ts`). Permit zones (Mon–Fri 9am–5pm) only bite on a weekday day shift; Copperfield Avenue is permit-only 9am–10pm every day. The selection defaults to the strictest option and is deliberately never remembered.
+- Official parking (`OFFICIAL_PARKING`): Brunel University car park. Access rules are in the Hillingdon LGM's email / LASConnect, so don't state them here.
+- Data: `app/data/b5parking/` (`roads.json` classifications + facts, `geometry.json` lat/lon, `index.ts` status logic).
+- Hidden three ways: `public/robots.txt` (Disallow for all + named AI agents), `X-Robots-Tag` and a 403 for AI user-agents in `server/middleware/b5parking-guard.ts`, and a `noindex, noai` meta tag. Also excluded in `sitemap.exclude`.
+- Status colours (green/blue/red/amber/grey) are data encoding, not brand accents, and are paired with line style so colour isn't the only cue.
+- Facts are dated (`CHECKED`). Re-verify against the council's HH and Cowley zone orders before changing any road's category.
+
 ## Design Context
 
 ### Users
