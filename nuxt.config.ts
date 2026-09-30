@@ -76,6 +76,6 @@ export default defineNuxtConfig({
   },
 
   sitemap: {
-    exclude: []
+    exclude: ['/b5parking', '/b5parking/**']
   }
 })

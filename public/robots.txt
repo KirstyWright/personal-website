@@ -1,0 +1,39 @@
+# kirsty.dev
+# /b5parking is a QR-code page for one ambulance station. It isn't for search
+# engines or AI training/answer engines. (Enforced server-side too.)
+
+User-agent: *
+Disallow: /b5parking
+
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: GoogleOther
+User-agent: Google-CloudVertexBot
+User-agent: Applebot-Extended
+User-agent: Amazonbot
+User-agent: Meta-ExternalAgent
+User-agent: Meta-ExternalFetcher
+User-agent: FacebookBot
+User-agent: CCBot
+User-agent: Bytespider
+User-agent: cohere-ai
+User-agent: MistralAI-User
+User-agent: DuckAssistBot
+User-agent: YouBot
+User-agent: Diffbot
+User-agent: ImagesiftBot
+User-agent: Omgilibot
+User-agent: Timpibot
+User-agent: AI2Bot
+Disallow: /b5parking
+
+Sitemap: https://kirsty.dev/sitemap.xml

@@ -31,6 +31,16 @@ Personal site for Kirsty Wright. Single-page hub (hero + SnapMedic feature + pro
 - `bun run build` — production build
 - `bun run preview` — preview production build
 
+## /b5parking (hidden page)
+
+QR-code destination for Hillingdon Ambulance Station parking. **Never link to it from the site, never add it to the sitemap, never loosen its crawler rules.**
+
+- Page: `app/pages/b5parking.vue`, layout `bare`, map in `app/components/parking/StationMap.client.vue` (Leaflet + OSM tiles, client-only).
+- Data: `app/data/b5parking/` (`roads.json` classifications + facts, `geometry.json` lat/lon, `places.json` car parks/bus/cycle, `index.ts` status logic). Permit hours are judged in London time.
+- Hidden three ways: `public/robots.txt` (Disallow for all + named AI agents), `X-Robots-Tag` and a 403 for AI user-agents in `server/middleware/b5parking-guard.ts`, and a `noindex, noai` meta tag. Also excluded in `sitemap.exclude`.
+- Status colours (green/blue/red/amber/grey) are data encoding, not brand accents, and are paired with line style so colour isn't the only cue.
+- Facts are dated (`CHECKED` in `data/b5parking/index.ts`). Re-verify against the council's HH and Cowley zone orders before changing any road's category.
+
 ## Design Context
 
 ### Users
