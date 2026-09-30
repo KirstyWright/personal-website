@@ -388,17 +388,8 @@ function onLocated(d: number | null) {
 
     <section
       class="pk-section"
-      aria-labelledby="pk-caveat-h"
+      aria-label="Sources"
     >
-      <h2
-        id="pk-caveat-h"
-        class="text-h2"
-      >
-        Before you rely on this
-      </h2>
-      <p class="pk-prose">
-        &ldquo;No permit scheme&rdquo; means the road isn&rsquo;t in any of the council&rsquo;s parking management scheme orders. Yellow lines can still apply, especially at junctions and bends, and the council can suspend bays for roadworks. Bank holidays aren&rsquo;t covered here, so read the sign. The signs and road markings on the day are what&rsquo;s legally binding. Residents of Apple Tree Avenue and Birch Avenue have petitioned for a permit scheme, so look for new signs there.
-      </p>
       <p class="pk-fine">
         Roads checked against the council&rsquo;s orders on {{ CHECKED }}. Distances are straight-line from the station; walking times assume 80&nbsp;metres a minute.
       </p>
@@ -412,7 +403,7 @@ function onLocated(d: number | null) {
 
     <footer class="pk-foot">
       <p class="pk-fine">
-        Spotted a change on the ground? <a href="mailto:kirsty@kirsty.dev?subject=b5parking">kirsty@kirsty.dev</a>. Made by <NuxtLink to="/">Kirsty Wright</NuxtLink>.
+        Restrictions incorrect? <a href="mailto:kirsty@kirsty.dev?subject=b5parking">kirsty@kirsty.dev</a>. Made by <NuxtLink to="/">Kirsty Wright</NuxtLink>.
       </p>
     </footer>
   </main>
