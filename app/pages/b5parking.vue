@@ -403,7 +403,7 @@ function onLocated(d: number | null) {
 
     <footer class="pk-foot">
       <p class="pk-fine">
-        Restrictions incorrect? <a href="mailto:kirsty@kirsty.dev?subject=b5parking">kirsty@kirsty.dev</a>. Made by <NuxtLink to="/">Kirsty Wright</NuxtLink>.
+        Restrictions incorrect? <a href="mailto:kirsty@kirsty.dev?subject=b5parking">kirsty@kirsty.dev</a>.
       </p>
     </footer>
   </main>
