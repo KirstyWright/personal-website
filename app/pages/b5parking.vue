@@ -21,13 +21,13 @@ definePageMeta({ layout: 'bare' })
 // Not for search engines or LLMs. robots.txt, X-Robots-Tag and the server
 // guard say the same thing; this is the in-page copy of it.
 useHead({
-  title: 'Parking near Hillingdon Ambulance Station',
+  title: 'B5 Parking Options',
   htmlAttrs: { lang: 'en-GB' },
   meta: [
     { name: 'robots', content: 'noindex, nofollow, noarchive, nosnippet, noimageai, noai' },
     { name: 'googlebot', content: 'noindex, nofollow, noarchive, nosnippet' },
     { name: 'description', content: 'Official parking and which roads have restrictions near Hillingdon Ambulance Station, by shift.' },
-    { property: 'og:title', content: 'Parking near Hillingdon Ambulance Station' },
+    { property: 'og:title', content: 'B5 Parking Options' },
     { property: 'og:description', content: 'Official parking, and which roads have restrictions, by shift.' }
   ]
 })
@@ -119,11 +119,8 @@ function onLocated(d: number | null) {
   <main class="pk">
     <header class="pk-head">
       <h1 class="text-h1">
-        Where to park near the station
+        B5 Parking Options
       </h1>
-      <p class="pk-sub">
-        The official option first, then which roads have permit restrictions and which don&rsquo;t.
-      </p>
     </header>
 
     <section
@@ -145,10 +142,10 @@ function onLocated(d: number | null) {
           {{ o.name }}
         </h3>
         <p>
-          {{ o.where }} About {{ o.d }}&nbsp;m from the station, roughly {{ walkMinutes(o.d) }}&nbsp;minutes on foot.
+          {{ o.where }} 15&nbsp;min walk.
         </p>
         <p>
-          <strong>Staff:</strong> check the email from the Hillingdon LGM, or LASConnect, for how to use it.
+          Check the email from the Hillingdon LGM, or LASConnect, for how to use it.
         </p>
         <p>
           <a
@@ -463,15 +460,6 @@ function onLocated(d: number | null) {
 
 .pk-head .text-h1 {
   margin: 0;
-}
-
-.pk-sub {
-  margin: 0.75rem 0 0;
-  max-width: 55ch;
-  color: var(--color-ink-soft);
-  font-size: 1.0625rem;
-  line-height: 1.5;
-  text-wrap: pretty;
 }
 
 /* the official answer: ruled off, not boxed */

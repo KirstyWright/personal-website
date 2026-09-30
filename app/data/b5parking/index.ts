@@ -32,7 +32,7 @@ export const RADIUS_M = 805
 export const OFFICIAL_PARKING = [
   {
     id: 'brunel',
-    name: 'Brunel University car park',
+    name: 'Brunel University',
     // from the shared Google Maps pin
     lat: 51.532235,
     lon: -0.468106,
@@ -47,7 +47,7 @@ export const SHIFTS: { id: Shift, label: string, rule: string }[] = [
   {
     id: 'day',
     label: 'Weekday day',
-    rule: 'Any shift that overlaps Mon–Fri 9am–5pm. Permit bays are enforced in those hours, so a car left in one from 7am is ticketable from 9am. Stick to the green roads.'
+    rule: 'Any shift that overlaps Mon–Fri 9am–5pm.'
   },
   {
     id: 'night',
