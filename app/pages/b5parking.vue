@@ -124,37 +124,27 @@ function onLocated(d: number | null) {
     </header>
 
     <section
+      v-for="o in OFFICIAL_PARKING"
+      :key="o.id"
       class="pk-official"
-      aria-labelledby="pk-official-h"
+      :aria-labelledby="`pk-${o.id}-h`"
     >
       <h2
-        id="pk-official-h"
+        :id="`pk-${o.id}-h`"
         class="text-h2"
       >
-        Official parking
+        {{ o.name }}
       </h2>
-      <div
-        v-for="o in OFFICIAL_PARKING"
-        :key="o.id"
-        class="pk-official__item"
-      >
-        <h3 class="pk-official__name">
-          {{ o.name }}
-        </h3>
-        <p>
-          {{ o.where }} 15&nbsp;min walk.
-        </p>
-        <p>
-          Check the email from the Hillingdon LGM, or LASConnect, for how to use it.
-        </p>
-        <p>
-          <a
-            class="pk-action"
-            :href="directionsUrl(o.lat, o.lon)"
-            rel="noopener"
-          >Directions</a>
-        </p>
-      </div>
+      <p>
+        {{ o.where }} 15&nbsp;min walk. Check the email from the Hillingdon LGM, or LASConnect, for how to use it.
+      </p>
+      <p>
+        <a
+          class="pk-action"
+          :href="directionsUrl(o.lat, o.lon)"
+          rel="noopener"
+        >Directions</a>
+      </p>
     </section>
 
     <section
@@ -471,12 +461,6 @@ function onLocated(d: number | null) {
 
 .pk-official > h2 {
   margin: 0 0 0.75rem;
-}
-
-.pk-official__name {
-  margin: 0;
-  font-size: 1.0625rem;
-  font-weight: 600;
 }
 
 .pk-official p {

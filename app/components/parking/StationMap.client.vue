@@ -69,8 +69,14 @@ function icon(html: string, size: number, className = '') {
   return L.divIcon({ html, className: `pk-pin ${className}`, iconSize: [size, size], iconAnchor: [size / 2, size / 2] })
 }
 
+/** A classic map pin: the tip sits on the spot. */
+function pinIcon(html: string, width: number) {
+  const height = Math.round(width * 32 / 24)
+  return L.divIcon({ html, className: 'pk-pin', iconSize: [width, height], iconAnchor: [width / 2, height] })
+}
+
 const PARK = '<svg viewBox="0 0 26 26" width="100%" height="100%" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="5" fill="#fff" stroke="#111" stroke-width="2.5"/><path d="M9.5 19V7h5a3.5 3.5 0 0 1 0 7h-5" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-const CROSS = '<svg viewBox="0 0 24 24" width="100%" height="100%" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#111" stroke="#fff" stroke-width="2"/><path d="M10.5 5.5h3v5h5v3h-5v5h-3v-5h-5v-3h5z" fill="#fff"/></svg>'
+const PIN = '<svg viewBox="0 0 24 32" width="100%" height="100%" aria-hidden="true"><path d="M12 1.5C6.6 1.5 2.5 5.6 2.5 10.9c0 6.9 9.5 19.6 9.5 19.6s9.5-12.7 9.5-19.6C21.5 5.6 17.4 1.5 12 1.5z" fill="#111" stroke="#fff" stroke-width="2"/><circle cx="12" cy="11" r="3.6" fill="#fff"/></svg>'
 
 // Draw order: private / check first, so the answer (free roads) sits on top.
 const STACK: Status[] = ['private', 'check', 'late', 'permit', 'free']
@@ -178,14 +184,14 @@ onMounted(async () => {
 
   // official parking
   for (const o of OFFICIAL_PARKING) {
-    L.marker([o.lat, o.lon], { icon: icon(PARK, 30), keyboard: true, title: o.name, alt: `${o.name}, official parking` })
-      .bindTooltip('Official parking', { permanent: true, direction: 'top', offset: [0, -14], className: 'pk-label' })
+    L.marker([o.lat, o.lon], { icon: icon(PARK, 30), keyboard: true, title: o.name, alt: o.name })
+      .bindTooltip(o.name, { permanent: true, direction: 'right', offset: [16, 0], className: 'pk-label' })
       .addTo(map)
   }
 
   // station, on top of everything
-  L.marker(stationLL, { icon: icon(CROSS, 34), zIndexOffset: 1000, keyboard: true, title: STATION.name, alt: STATION.name })
-    .bindTooltip('Station', { permanent: true, direction: 'top', offset: [0, -16], className: 'pk-label pk-label--station' })
+  L.marker(stationLL, { icon: pinIcon(PIN, 30), zIndexOffset: 1000, keyboard: true, title: STATION.name, alt: STATION.name })
+    .bindTooltip('Station', { permanent: true, direction: 'top', offset: [0, -42], className: 'pk-label pk-label--station' })
     .addTo(map)
 
   map.on('click', () => emit('select', null))
