@@ -2,20 +2,19 @@
 import type * as Leaflet from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import {
-  BUS_STOPS,
-  CAR_PARKS,
+  OFFICIAL_PARKING,
   RADIUS_M,
   ROADS,
   STATION,
   STATUS_STYLE,
   statusOf,
   type LatLon,
-  type Mode,
+  type Shift,
   type Status
 } from '~/data/b5parking'
 
 const props = defineProps<{
-  mode: Mode
+  shift: Shift
   selectedId: string | null
 }>()
 
@@ -25,7 +24,7 @@ const emit = defineEmits<{
   ready: []
 }>()
 
-type Geometry = { roads: Record<string, LatLon[][]>, carparks: Record<string, LatLon[]> }
+type Geometry = { roads: Record<string, LatLon[][]> }
 
 const el = ref<HTMLDivElement>()
 const hint = ref(false)
@@ -70,9 +69,8 @@ function icon(html: string, size: number, className = '') {
   return L.divIcon({ html, className: `pk-pin ${className}`, iconSize: [size, size], iconAnchor: [size / 2, size / 2] })
 }
 
+const PARK = '<svg viewBox="0 0 26 26" width="100%" height="100%" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="5" fill="#fff" stroke="#111" stroke-width="2.5"/><path d="M9.5 19V7h5a3.5 3.5 0 0 1 0 7h-5" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 const CROSS = '<svg viewBox="0 0 24 24" width="100%" height="100%" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#111" stroke="#fff" stroke-width="2"/><path d="M10.5 5.5h3v5h5v3h-5v5h-3v-5h-5v-3h5z" fill="#fff"/></svg>'
-const PARK = '<svg viewBox="0 0 22 22" width="100%" height="100%" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="4" fill="#fff" stroke="#111" stroke-width="2"/><path d="M8 16V6h4a3 3 0 0 1 0 6H8" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-const BUS = '<svg viewBox="0 0 22 22" width="100%" height="100%" aria-hidden="true"><rect x="1" y="1" width="20" height="20" rx="4" fill="#111" stroke="#fff" stroke-width="2"/><path d="M6 6.5h10v7H6zM6 10h10M8 16v1.5M14 16v1.5" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 
 // Draw order: private / check first, so the answer (free roads) sits on top.
 const STACK: Status[] = ['private', 'check', 'late', 'permit', 'free']
@@ -81,11 +79,11 @@ function styleRoads() {
   const w = weightFor(map.getZoom())
   const anySelected = props.selectedId !== null
   let selectedGroup: Leaflet.FeatureGroup | undefined
-  const stacked = [...ROADS].sort((a, b) => STACK.indexOf(statusOf(a.cat, props.mode)) - STACK.indexOf(statusOf(b.cat, props.mode)))
+  const stacked = [...ROADS].sort((a, b) => STACK.indexOf(statusOf(a.cat, props.shift)) - STACK.indexOf(statusOf(b.cat, props.shift)))
   for (const road of stacked) {
     const layer = roadLayers[road.id]
     if (!layer) continue
-    const s = STATUS_STYLE[statusOf(road.cat, props.mode)]
+    const s = STATUS_STYLE[statusOf(road.cat, props.shift)]
     const selected = road.id === props.selectedId
     const dim = anySelected && !selected
     const width = selected ? w + 3 : w
@@ -121,7 +119,9 @@ function focusRoad() {
 }
 
 function reset() {
-  map.fitBounds(L.latLng(stationLL).toBounds((RADIUS_M + 40) * 2), { padding: [4, 4], animate: false })
+  const bounds = L.latLng(stationLL).toBounds((RADIUS_M + 40) * 2)
+  for (const o of OFFICIAL_PARKING) bounds.extend([o.lat, o.lon])
+  map.fitBounds(bounds, { padding: [8, 8], animate: false })
 }
 
 function locate() {
@@ -158,22 +158,6 @@ onMounted(async () => {
   // half-mile ring
   L.circle(stationLL, { radius: RADIUS_M, color: '#111', weight: 1.5, opacity: 0.55, dashArray: '2 6', fill: false, interactive: false }).addTo(map)
 
-  // hospital car parks
-  for (const cp of CAR_PARKS) {
-    const poly = geometry.carparks[cp.id]
-    if (poly) L.polygon(poly, { color: '#111', weight: 1.5, fillColor: '#111', fillOpacity: 0.08, interactive: false }).addTo(map)
-    L.marker(cp.centre, { icon: icon(PARK, 24), keyboard: true, title: cp.name, alt: `${cp.name}, ${cp.d} metres from the station`, riseOnHover: true })
-      .bindTooltip(cp.name, { direction: 'top', offset: [0, -10], className: 'pk-label' })
-      .addTo(map)
-  }
-
-  // bus stops
-  for (const bs of BUS_STOPS) {
-    L.marker(bs.at, { icon: icon(BUS, 24), keyboard: true, title: `Bus stop ${bs.id}, ${bs.name}`, alt: `Bus stop ${bs.id}, ${bs.name}. Routes ${bs.routes.join(', ')}` })
-      .bindTooltip(`Bus stop ${bs.id} · ${bs.routes.join(' ')}`, { direction: 'top', offset: [0, -10], className: 'pk-label' })
-      .addTo(map)
-  }
-
   // roads (stacking order is applied in styleRoads)
   for (const road of ROADS) {
     const polys = geometry.roads[road.id]
@@ -190,6 +174,13 @@ onMounted(async () => {
     hits.forEach(h => group.addLayer(h))
     group.addTo(map)
     roadLayers[road.id] = { group, lines, casings, hits, label: midpoint(polys) }
+  }
+
+  // official parking
+  for (const o of OFFICIAL_PARKING) {
+    L.marker([o.lat, o.lon], { icon: icon(PARK, 30), keyboard: true, title: o.name, alt: `${o.name}, official parking` })
+      .bindTooltip('Official parking', { permanent: true, direction: 'top', offset: [0, -14], className: 'pk-label' })
+      .addTo(map)
   }
 
   // station, on top of everything
@@ -229,7 +220,7 @@ onMounted(async () => {
   emit('ready')
 })
 
-watch(() => props.mode, () => map && styleRoads())
+watch(() => props.shift, () => map && styleRoads())
 watch(() => props.selectedId, () => {
   if (!map) return
   styleRoads()
@@ -270,7 +261,7 @@ defineExpose({ reset, locate })
 }
 
 .pk-map__canvas {
-  height: clamp(340px, 58svh, 580px);
+  height: clamp(300px, 46svh, 520px);
   background: var(--color-rule);
   font-family: var(--font-sans);
 }
@@ -351,7 +342,7 @@ defineExpose({ reset, locate })
 .pk-map .leaflet-control-attribution {
   background: rgb(250 250 247 / 0.9);
   color: var(--color-ink-soft);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 
 .pk-map .leaflet-control-attribution a {

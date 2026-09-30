@@ -1,8 +1,8 @@
 import roadData from './roads.json'
-import placeData from './places.json'
 
 export type Cat = 'free' | 'hh' | 'c' | 'late' | 'part' | 'main' | 'private'
-export type Mode = 'day' | 'off'
+/** Which part of the week the car will be sitting there. */
+export type Shift = 'day' | 'night' | 'weekend'
 export type Status = 'free' | 'permit' | 'late' | 'check' | 'private'
 export type LatLon = [number, number]
 
@@ -18,39 +18,48 @@ export interface Road {
   facts?: string[]
 }
 
-export interface CarPark {
-  id: string
-  name: string
-  d: number
-  centre: LatLon
-  fee: boolean | null
-}
-
-export interface BusStop {
-  id: string
-  name: string
-  d: number
-  at: LatLon
-  routes: string[]
-  shelter: boolean
-  naptan: string
-}
-
 export const ROADS = roadData as Road[]
-export const CAR_PARKS = placeData.carparks as CarPark[]
-export const BUS_STOPS = placeData.busStops as BusStop[]
-export const CYCLE = placeData.cycle as { d: number, spaces: number, covered: boolean, locked: boolean, at: LatLon }[]
 
 // Centre of OSM way 97638188 (London Ambulance Service, Hillingdon Hospital)
 export const STATION = {
   name: 'Hillingdon Ambulance Station',
   lat: 51.52473,
-  lon: -0.46447,
-  address: 'Royal Lane, Hillingdon',
-  postcode: 'UB8 3QX'
+  lon: -0.46447
 }
 export const RADIUS_M = 805
+
+/** Official parking for station staff. Rules and access are in the LGM email / LASConnect. */
+export const OFFICIAL_PARKING = [
+  {
+    id: 'brunel',
+    name: 'Brunel University car park',
+    // from the shared Google Maps pin
+    lat: 51.532235,
+    lon: -0.468106,
+    // straight-line metres from the station
+    d: 870,
+    where: 'On the Brunel campus, off Kingston Lane.'
+  }
+]
 export const CHECKED = '30 September 2026'
+
+export const SHIFTS: { id: Shift, label: string, rule: string }[] = [
+  {
+    id: 'day',
+    label: 'Weekday day',
+    rule: 'Any shift that overlaps Mon–Fri 9am–5pm. Permit bays are enforced in those hours, so a car left in one from 7am is ticketable from 9am. Stick to the green roads.'
+  },
+  {
+    id: 'night',
+    label: 'Night',
+    rule: 'On the road after 5pm and gone by 9am. Permit bays are open overnight, but on weekday mornings move the car before 9am. Copperfield Avenue is permit-only until 10pm.'
+  },
+  {
+    id: 'weekend',
+    label: 'Weekend',
+    rule: 'Any shift on a Saturday or Sunday. Permit bays only apply Mon–Fri, so they’re open. Copperfield Avenue is permit-only 9am–10pm, every day.'
+  }
+]
 
 /**
  * Status colours are data encoding, not decoration. Each also differs in line
@@ -67,27 +76,50 @@ export const STATUS_STYLE: Record<Status, { colour: string, dash: string | null 
 
 export const STATUS_ORDER: Status[] = ['free', 'permit', 'late', 'check', 'private']
 
-const META: Record<Cat, Record<Mode, [Status, string]>> = {
-  free: { day: ['free', 'Free to park (no scheme found)'], off: ['free', 'Free to park (no scheme found)'] },
-  hh: { day: ['permit', 'Permit holders only'], off: ['free', 'Open to anyone now'] },
-  c: { day: ['permit', 'Permit holders only'], off: ['free', 'Open to anyone now'] },
-  late: { day: ['late', 'Permit only until 10pm daily'], off: ['late', 'Permit only until 10pm daily'] },
-  part: { day: ['check', 'Mixed: check the signs'], off: ['check', 'Mixed: check the signs'] },
-  main: { day: ['check', 'Busier road: expect yellow lines'], off: ['check', 'Busier road: expect yellow lines'] },
-  private: { day: ['private', 'Private road'], off: ['private', 'Private road'] }
+/** Permit zones (Mon–Fri 9am–5pm) only bite on a weekday day shift. */
+export function statusOf(cat: Cat, shift: Shift): Status {
+  switch (cat) {
+    case 'free': return 'free'
+    case 'hh':
+    case 'c': return shift === 'day' ? 'permit' : 'free'
+    case 'late': return 'late'
+    case 'part':
+    case 'main': return 'check'
+    case 'private': return 'private'
+  }
 }
 
-export function statusOf(cat: Cat, mode: Mode): Status {
-  return META[cat][mode][0]
+export function statusTitle(cat: Cat, shift: Shift): string {
+  switch (statusOf(cat, shift)) {
+    case 'free':
+      if (cat === 'free') return 'No permit scheme'
+      return shift === 'night' ? 'Permit bays, open overnight' : 'Permit bays, open at weekends'
+    case 'permit': return 'Permit holders only'
+    case 'late': return 'Permit only until 10pm daily'
+    case 'check': return cat === 'main' ? 'Busy road: expect yellow lines' : 'Mixed: check the signs'
+    case 'private': return 'Private road'
+  }
 }
 
-export function statusTitle(cat: Cat, mode: Mode): string {
-  return META[cat][mode][1]
+/** The per-road explanation, worded for the selected shift. */
+export function roadNote(road: Road, shift: Shift): string {
+  const zone = road.note.match(/Zone (?:HH|C\d)/)?.[0] ?? 'Permit'
+  if (road.cat === 'hh' || road.cat === 'c') {
+    if (shift === 'day') return road.note
+    if (shift === 'night') return `${zone} bays only apply Mon–Fri 9am–5pm. Fine overnight, but on weekday mornings be gone by 9am.`
+    return `${zone} bays only apply Mon–Fri 9am–5pm, so they’re open all weekend.`
+  }
+  if (road.cat === 'late') {
+    return shift === 'day'
+      ? road.note
+      : `${road.note} Only OK if you arrive after 10pm and are gone by 9am.`
+  }
+  return road.note
 }
 
-export function legendLabel(s: Status, mode: Mode): string {
+export function legendLabel(s: Status, shift: Shift): string {
   const labels: Record<Status, string> = {
-    free: mode === 'day' ? 'No permit scheme found' : 'Free to park now (check signs)',
+    free: shift === 'day' ? 'No permit scheme found' : 'Fine to park (check signs)',
     permit: 'Permit holders only',
     late: 'Permit only, 9am to 10pm every day',
     check: 'Mixed or busy: check the signs',
@@ -96,16 +128,10 @@ export function legendLabel(s: Status, mode: Mode): string {
   return labels[s]
 }
 
-/** Short label for dense lists. */
-export function shortLabel(s: Status, mode: Mode): string {
-  const labels: Record<Status, string> = {
-    free: mode === 'day' ? 'No scheme' : 'Free now',
-    permit: 'Permit',
-    late: 'Permit to 10pm',
-    check: 'Check signs',
-    private: 'Private'
-  }
-  return labels[s]
+/** Short label for dense lists; empty when the group heading already says it. */
+export function rowLabel(cat: Cat, shift: Shift): string {
+  if (cat === 'free') return ''
+  return statusTitle(cat, shift)
 }
 
 export function walkMinutes(d: number): number {
@@ -116,40 +142,12 @@ export function directionsUrl(lat: number, lon: number): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=driving`
 }
 
-export function appleDirectionsUrl(lat: number, lon: number): string {
-  return `https://maps.apple.com/?daddr=${lat},${lon}&dirflg=d`
-}
-
-/** London wall-clock parts, so a visitor's phone timezone can't skew permit hours. */
-export function londonClock(date = new Date()) {
-  const parts = new Intl.DateTimeFormat('en-GB', {
-    timeZone: 'Europe/London',
-    weekday: 'long',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23'
-  }).formatToParts(date)
-  const get = (t: string) => parts.find(p => p.type === t)?.value ?? ''
-  const weekday = get('weekday')
-  const hour = Number(get('hour'))
-  return { weekday, hour, time: `${get('hour')}:${get('minute')}` }
-}
-
-export function modeNow(date = new Date()): Mode {
-  const { weekday, hour } = londonClock(date)
-  const weekend = weekday === 'Saturday' || weekday === 'Sunday'
-  return !weekend && hour >= 9 && hour < 17 ? 'day' : 'off'
-}
-
-/** One plain sentence about what the clock means for permit bays. */
-export function whenSentence(date = new Date()): string {
-  const { weekday, hour, time } = londonClock(date)
-  const stamp = `${weekday}, ${time}`
-  if (modeNow(date) === 'day') {
-    return `${stamp}. Permit bays are enforced until 5pm, so the green roads are your best bet.`
-  }
-  const weekend = weekday === 'Saturday' || weekday === 'Sunday'
-  const friEve = weekday === 'Friday' && hour >= 17
-  const until = weekend || friEve ? '9am on Monday' : hour >= 17 ? '9am tomorrow' : '9am'
-  return `${stamp}. Permit bays are open to anyone until ${until}, except Copperfield Avenue, which stays permit-only until 10pm.`
+/**
+ * Where to start. Never guesses a night shift: a night-shifter opening the link
+ * for a day shift must not see "night" pre-selected, so anything but a London
+ * weekend starts on the strictest option.
+ */
+export function defaultShift(date = new Date()): Shift {
+  const weekday = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', weekday: 'long' }).format(date)
+  return weekday === 'Saturday' || weekday === 'Sunday' ? 'weekend' : 'day'
 }
